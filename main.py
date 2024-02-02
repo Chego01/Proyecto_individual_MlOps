@@ -74,3 +74,12 @@ def get_recomedacion_juego(Id_item: int):
         return result
     except Exception as e:
         return {'error': str(e)}  
+
+
+@app.get("/recomendacion_usuario/{id_usuario}")
+def get_recomedacion_usuario (id_usuario: str):
+    try:
+        result= recomendacion_usuario(id_usuario)
+        return result
+    except Exception as e:
+        return {'error': str(e)}  

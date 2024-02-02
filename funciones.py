@@ -3,8 +3,12 @@ import fastapi
 from fastapi import FastAPI
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
 
 data_steam = pd.read_csv('EDA/data_merged.csv')
+data = data_steam.copy()
 data_steam['Release_date'] = data_steam['Release_date'].astype(int)
 
 # 1ra función: Cantidad de items y porcentaje de contenido Free por año según empresa desarrolladora. 
@@ -147,8 +151,8 @@ def developer_reviews_analysis(desarrolladora: str):
 def recomendacion_juego(Id_item):
     try:
         # Cargar datos
-        data = pd.read_csv('C:\\Users\\User\\PI_ML_OPS\\Machine_Learning\\steam_juegos.csv')
-        data_steam_juegos = pd.read_csv('C:\\Users\\User\\PI_ML_OPS\\Machine_Learning\\steam_id.csv')
+        data = pd.read_csv('Machine_Learning/steam_juegos.csv')
+        data_steam_juegos = pd.read_csv('Machine_Learning/steam_id.csv')
 
         # Verificar si el Id_item existe en el conjunto de datos
         if Id_item not in data['Id_item'].values:
@@ -190,6 +194,58 @@ def recomendacion_juego(Id_item):
         }
 
         return result
+
+    except Exception as e:
+        return {'error': str(e)}
+    
+
+def recomendacion_usuario(id_usuario):
+    try:
+        data_random_forest = data.copy()
+
+        # Verifica si el usuario existe en el conjunto de datos
+        if id_usuario not in data_random_forest['Id_user'].values:
+            raise ValueError(f'El usuario {id_usuario} no existe en el conjunto de datos.')
+
+        # Selecciona características (X) y la etiqueta (y)
+        X = data_random_forest[['Id_item', 'Release_date', 'Price', 'Posted', 'Sentiment_analysis', 'Playtime_forever']]
+        y = data_random_forest['Recommend']
+
+        # Divide el conjunto de datos en conjuntos de entrenamiento y prueba
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+        # Crea y entrena el modelo
+        modelo = RandomForestClassifier(n_estimators=100, random_state=42)
+        modelo.fit(X_train, y_train)
+
+        # Filtra el conjunto de datos para obtener las características de juegos no etiquetados para el usuario
+        juegos_sin_etiqueta = data_random_forest[data_random_forest['Id_user'] == id_usuario][['Id_item', 'Release_date', 'Price', 'Posted', 'Sentiment_analysis', 'Playtime_forever']]
+
+        # Asegúrate de que haya al menos un juego sin etiquetar para el usuario
+        if juegos_sin_etiqueta.empty:
+            raise ValueError(f'No hay juegos sin etiquetar para el usuario {id_usuario}.')
+
+        # Utiliza el modelo entrenado para predecir las preferencias del usuario para los juegos sin etiquetar
+        preferencias_usuario = modelo.predict(juegos_sin_etiqueta)
+
+        # Combina las predicciones con la información del juego y selecciona los 5 mejores
+        juegos_sin_etiqueta['Recommend'] = preferencias_usuario
+        juegos_recomendados = juegos_sin_etiqueta.sort_values(by='Recommend', ascending=False).head(5)
+
+        # Realiza una fusión con el conjunto de datos original para obtener el nombre del juego
+        juegos_recomendados = pd.merge(juegos_recomendados, data_random_forest[['Id_item', 'App_name']], on='Id_item', how='left')
+
+        # Elimina duplicados basados en 'App_name'
+        juegos_recomendados = juegos_recomendados.drop_duplicates(subset='App_name')
+
+        # Reinicia el índice y luego incrementa en 1
+        juegos_recomendados.reset_index(drop=True, inplace=True)
+        juegos_recomendados.index += 1
+
+        # Crear mensaje de recomendación
+        mensaje_recomendacion = f'Recomendaciones para el usuario {id_usuario}:\n{juegos_recomendados.to_dict(orient="records")}'
+        datos_dict = juegos_recomendados.to_dict(orient='records')
+        return  datos_dict
 
     except Exception as e:
         return {'error': str(e)}
