@@ -10,7 +10,7 @@ from fastapi import FastAPI, HTTPException
 
 app = FastAPI()
 
-data_steam = pd.read_csv('EDA\data_merged.csv')
+data_steam = pd.read_csv('EDA/data_merged.csv')
 
 @app.get("/")
 #http://127.0.0.1:8000 Ruta madre del puerto
