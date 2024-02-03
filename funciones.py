@@ -35,9 +35,9 @@ def developer(desarrollador: str):
     result_data.columns = ['Release_date', 'Cantidad_items', 'Porcentaje_contenido_gratis']
 
     result_dict = {
-        "Año": result_data['Release_date'].tolist(),
-        "Cantidad de items": result_data['Cantidad_items'].tolist(),
-        "Porcentaje_contenido_gratis": result_data['Porcentaje_contenido_gratis'].tolist()
+        "Año": result_data['Release_date'].to_dict(),
+        "Cantidad de items": result_data['Cantidad_items'].to_dict(),
+        "Porcentaje_contenido_gratis": result_data['Porcentaje_contenido_gratis'].to_dict()
     }
     return result_dict
 
@@ -105,30 +105,23 @@ def UserForGenre(genero: str):
     return result
 
 # 4ta función Devuelve el top 3 de desarrolladores con juegos MÁS recomendados por usuarios para el año dado. (reviews.recommend = True y comentarios positivos)
-def best_developer_year(año: int):
-    # Limpiar la cadena del usuario eliminando espacios adicionales y convirtiendo a minúsculas
-    # Filtrar por el usuario proporcionado
-    user_data = data_steam[data_steam['Release_date'].astype(int) == año]
 
-    # Resto del código sigue igual
-    result_data = user_data.groupby('Developer').agg({
-        'Recommend': lambda x: (x == 1).sum(),
-        'Sentiment_analysis': lambda x: (x == 2).sum()
-    }).reset_index().sort_values(by=['Recommend', 'Sentiment_analysis'], ascending=False)
-
-    result_data = result_data.head(3)
+def best_developer_year(anio: int):
+    data_1 = data_steam[['Release_date', 'Recommend', 'Developer', 'Sentiment_analysis']]
     
-    # Crear la lista de resultados en el formato deseado
-    lista_resultado = {
-    f"Puesto {i + 1}": {
-        "Desarrollador": row['Developer'],
-        "Nro de recomendaciones": row['Recommend'],
-        "Comentarios positivos": row['Sentiment_analysis']
-    }
-    for i, (_, row) in enumerate(result_data.iterrows())
-}
+    # Filtrar los juegos por año y por recomendación positiva
+    df_year = data_1[(data_1["Release_date"] == anio) & (data_1["Recommend"] == True) & (data_1["Sentiment_analysis"] == 2)]
 
-    return lista_resultado
+    if df_year.empty:
+        return {"error": "No hay datos para el año especificado."}
+
+    # Contar el número de juegos recomendados por desarrollador y devolver los tres primeros desarrolladores
+    top_desarrolladores = df_year["Developer"].value_counts().head(3).index.tolist()
+
+    # Devolver el top 3 de desarrolladores
+    return {"Puesto 1": top_desarrolladores[0], "Puesto 2": top_desarrolladores[1], "Puesto 3": top_desarrolladores[2]}
+
+
 
 
 # 5ta función Según el desarrollador, se devuelve un diccionario con el nombre del desarrollador como llave y una lista con la cantidad total de registros de reseñas de usuarios 

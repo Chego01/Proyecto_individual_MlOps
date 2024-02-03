@@ -5,12 +5,12 @@ from fastapi import FastAPI
 from typing import List,Dict,Tuple,Sequence,Callable, Optional,Any,Union
 from typing import Union
 from fastapi.responses import JSONResponse
-from fastapi import HTTPException
 from fastapi import FastAPI, HTTPException
+import uvicorn
 
 app = FastAPI()
 
-data_steam = pd.read_csv('EDA/data_merged.csv')
+#data_steam = pd.read_csv('EDA/data_merged.csv')
 
 @app.get("/")
 #http://127.0.0.1:8000 Ruta madre del puerto
@@ -46,14 +46,14 @@ def Genre(genero: str):
         return {'error': str(e)}  
     
 #No corre
-@app.get("/bestdeveloperyear/{año}")
-async def best_developer(año: int):
+@app.get("/best_developer_year/{anio}")
+async def best_developer(anio: Union[int, str]):
     try:
-        
-        result = best_developer_year(año)
+        year = int(anio)
+        result = best_developer_year(year)
         return result
     except Exception as e:
-        return {'error': str(e)}
+        raise HTTPException(status_code=404, detail=str(e))
 
 
 #Si corre
@@ -83,3 +83,8 @@ def get_recomedacion_usuario (id_usuario: str):
         return result
     except Exception as e:
         return {'error': str(e)}  
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="127.0.0.1", port=8000)
