@@ -6,8 +6,18 @@
 <img src="https://user-images.githubusercontent.com/67664604/217914153-1eb00e25-ac08-4dfa-aaf8-53c09038f082.png"  height=300>
 </p>
 
-¡Bienvenidos al primer proyecto individual de la etapa de labs! En esta ocasión, deberán hacer un trabajo situándose en el rol de un ***MLOps Engineer***.  
+En el proyecto realizado, se llevó a cabo el proceso completo del ciclo de vida de los datos, analizando datasets de la plataforma Steam con el fin de crear modelos de machine learning. Estos modelos, a su vez, proporcionan sistemas de recomendación que ofrecen una solución al problema planteado.
 
+A lo largo del proyecto, se centró en alcanzar un Producto Mínimo Viable (MVP, por sus siglas en inglés) con el objetivo de obtener un dataset final. Este dataset se utiliza para la generación de consultas de los modelos de aprendizaje, que incluyen:
+
+El sistema de recomendación de juegos según el Id_item del juego.
+El sistema de recomendación de juegos ingresando el Id_usuario.
+De esta manera, se logra abordar eficientemente el problema planteado.
+
+De la misma manera, el proyecto tenia como segundo objetivo principal el de desarrollar una API para la realizacion de consultas por parte de la empresa, usando el framework FastApi. 
+Enlace de GitHub: https://github.com/Chego01/Proyecto_individual_MlOps
+Enlace de deployment:
+Enlace de video: 
 <hr>  
 
 ## **Descripción del problema (Contexto y rol a desarrollar)**
