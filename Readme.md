@@ -16,8 +16,11 @@ A lo largo del proyecto, se centró en alcanzar un Producto Mínimo Viable (MVP,
 De esta manera, se logra abordar eficientemente el problema planteado.
 
 De la misma manera, el proyecto tenía como segundo objetivo principal el de desarrollar una API para la realización de consultas por parte de la empresa, usando el framework FastApi. 
-Enlace de GitHub: [https://github.com/Chego01/Proyecto_individual_MlOps](https://github.com/Chego01/Proyecto_individual_MlOps)
+
+Enlace de GitHub: https://github.com/Chego01/Proyecto_individual_MlOps
+
 Enlace de deployment:
+
 Enlace de video: 
 <hr>  
 
