@@ -1,7 +1,7 @@
 <p align=center><img src=https://d31uz8lwfmyn8g.cloudfront.net/Assets/logo-henry-white-lg.png><p>
 
 # <h1 align=center> **PROYECTO INDIVIDUAL Nº1** </h1>
-
+# <h1 align=center>**`Kevin Manchego Villegas (MLOps)`**</h1>
 # <h1 align=center>**`Machine Learning Operations (MLOps)`**</h1>
 
 <p align="center">
@@ -149,5 +149,6 @@ Les acercamos un notion donde tienen respuestas a algunas preguntas básicas de 
 
   
 <br/>
-#   P r o y e c t o _ i n d i v i d u a l _ M l O p s  
+#   P r o y e c t o _ i n d i v i d u a l _ M l O p s 
+ 
  
