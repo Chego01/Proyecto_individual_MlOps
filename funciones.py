@@ -191,7 +191,7 @@ def recomendacion_juego(Id_item):
     except Exception as e:
         return {'error': str(e)}
     
-
+#7ma función Machine Learning se ingresa el Id_usuario y se le recomienda 5 juegos al mismo
 def recomendacion_usuario(id_usuario):
     try:
         data_random_forest = data.copy()

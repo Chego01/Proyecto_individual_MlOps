@@ -18,7 +18,7 @@ app = FastAPI()
 def root():
     return {'message':'Hello world'}
 
-#Si funciona
+# 1ra función: Cantidad de items y porcentaje de contenido Free por año según empresa desarrolladora. 
 @app.get("/developer/{desarrollador}")
 async def desarrollador(desarrollador:str):
     try:
@@ -27,7 +27,8 @@ async def desarrollador(desarrollador:str):
     except Exception as e:
 
         return {'error': str(e)}  
-#Si funciona
+    
+# 2da función: Debe devolver cantidad de dinero gastado por el usuario, el porcentaje de recomendación en base a reviews.recommend y cantidad de items.
 @app.get("/userdata/{User_id}")
 def user(User_id:str):
     try:
@@ -36,7 +37,7 @@ def user(User_id:str):
     except Exception as e:
         return {'error': str(e)}  
 
-#Si funciona
+# 3ra función Debe devolver el usuario que acumula más horas jugadas para el género dado y una lista de la acumulación de horas jugadas por año de lanzamiento.
 @app.get("/usergenre/{genero}")
 def Genre(genero: str):
     try:
@@ -45,7 +46,7 @@ def Genre(genero: str):
     except Exception as e:
         return {'error': str(e)}  
     
-#No corre
+# 4ta función Devuelve el top 3 de desarrolladores con juegos MÁS recomendados por usuarios para el año dado. (reviews.recommend = True y comentarios positivos)
 @app.get("/best_developer_year/{anio}")
 async def best_developer(anio: Union[int, str]):
     try:
@@ -56,7 +57,8 @@ async def best_developer(anio: Union[int, str]):
         raise HTTPException(status_code=404, detail=str(e))
 
 
-#Si corre
+# 5ta función Según el desarrollador, se devuelve un diccionario con el nombre del desarrollador como llave y una lista con la cantidad total de registros de reseñas de usuarios 
+# que se encuentren categorizados con un análisis de sentimiento como valor positivo o negativo.
 @app.get("/developer_reviews_analysis/{desarrolladora}")
 def dev_reviews_analysis(desarrolladora: str):
     try:
@@ -66,7 +68,7 @@ def dev_reviews_analysis(desarrolladora: str):
         return {'error': str(e)}  
 
 
-#Si corre
+# 6ta función - Machine Learning Ingresando el id de producto, deberíamos recibir una lista con 5 juegos recomendados similares al ingresado.
 @app.get("/recomendacion_juego/{Id_item}")
 def get_recomedacion_juego(Id_item: int):
     try:
