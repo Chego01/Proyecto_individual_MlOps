@@ -19,7 +19,7 @@ Enlace de GitHub: https://github.com/Chego01/Proyecto_individual_MlOps
 
 Enlace de deployment: https://mlops-render-a5uk.onrender.com/docs
 
-Enlace de video: 
+Enlace de video: https://youtu.be/VXgih67TVXA 
 <hr>  
 
 ## <h1 align=center> **`Extracción, Transformación y Carga de Datos`**
